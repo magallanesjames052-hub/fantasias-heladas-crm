@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fantasías Heladas — Seguimientos</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Fantasías Heladas" onerror="this.src='assets/logo-placeholder.svg'" />
+        <span>Fantasías<br/>Heladas CRM</span>
+      </div>
+      <nav>
+        <a href="dashboard.html">📊 Resumen</a>
+        <a href="pipeline.html">🔁 Pipeline</a>
+        <a href="fuentes.html">📡 Fuentes</a>
+        <a href="leads.html">🧾 Leads</a>
+        <a href="seguimientos.html" class="active">🗓 Seguimientos</a>
+      </nav>
+      <button class="logout-btn" onclick="abrirModalSync()" style="margin-bottom:8px">🔗 Sincronizar</button>
+      <button class="logout-btn" onclick="cerrarSesion()">⎋ Cerrar sesión</button>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <h1>Seguimientos</h1>
+          <p>Clientes potenciales con fecha de seguimiento pendiente o vencida</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Producto</th>
+              <th>Estado</th>
+              <th>Valor (USD)</th>
+              <th>Fuente</th>
+              <th>Fecha de seguimiento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tablaSeguimientos"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="syncModalOverlay">
+    <div class="modal">
+      <h2>Sincronizar con Google Sheets</h2>
+      <div class="campo full">
+        <label>URL de tu Apps Script (Web App)</label>
+        <input type="text" id="syncUrlInput" placeholder="https://script.google.com/macros/s/..." />
+      </div>
+      <div class="modal-acciones" style="justify-content:space-between;align-items:center">
+        <button type="button" class="btn btn-secondary" onclick="guardarUrlSync()">Guardar URL</button>
+        <div style="display:flex;gap:8px">
+          <button type="button" class="btn btn-secondary" onclick="traerDeSheets()">⬇ Traer de Sheets</button>
+          <button type="button" class="btn btn-primary" style="width:auto" onclick="subirASheets()">⬆ Subir a Sheets</button>
+        </div>
+      </div>
+      <p id="syncEstado" style="font-size:13px;color:#6e6480;margin-top:12px"></p>
+      <p id="syncUltima" style="font-size:12px;color:#9890ad"></p>
+      <div style="text-align:right;margin-top:10px">
+        <button type="button" class="btn btn-secondary" onclick="cerrarModalSync()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script>protegerPagina();</script>
+  <script src="js/sheetsSync.js"></script>
+  <script src="js/seguimientos.js"></script>
+</body>
+</html>

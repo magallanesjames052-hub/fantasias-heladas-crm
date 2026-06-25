@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fantasías Heladas — Iniciar sesión</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <img class="logo" src="assets/logo.png" alt="Fantasías Heladas" onerror="this.src='assets/logo-placeholder.svg'" />
+      <h1>Fantasías Heladas CRM</h1>
+      <p class="subtitle">Sabores auténticos, momentos mágicos</p>
+
+      <div class="error-msg" id="errorMsg">Usuario o contraseña incorrectos.</div>
+
+      <form id="loginForm">
+        <div class="campo">
+          <label for="usuario">Usuario</label>
+          <input type="text" id="usuario" autocomplete="username" placeholder="admin" required />
+        </div>
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+      </form>
+
+      <p class="hint">Acceso de demostración: usuario <b>admin</b> / contraseña <b>Heladas2026</b></p>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (estaAutenticado()) {
+      window.location.href = "dashboard.html";
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const usuario = document.getElementById("usuario").value.trim();
+      const contrasena = document.getElementById("contrasena").value;
+      const ok = await intentarLogin(usuario, contrasena);
+      if (ok) {
+        inicializarDatos();
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById("errorMsg").style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
