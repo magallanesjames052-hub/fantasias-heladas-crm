@@ -4,7 +4,7 @@
 
 const ESTADOS = ["Nuevo Lead", "Contactado", "Interesado", "Propuesta", "Ganado", "Perdido"];
 const FUENTES = ["Facebook", "Instagram", "TikTok", "WhatsApp", "Referido", "Google"];
-const PRODUCTOS = ["Waffle", "Banana Split", "Helado Soft", "Sundae", "Helado con Queso", "Tulipán con Queso"];
+const PRODUCTOS = ["Waffle", "Banana Split", "Helado Soft", "Sundae", "Helado con Queso", "Tulipán con Queso", "Flotante"];
 const PRIORIDADES = ["Alta", "Media", "Baja"];
 
 const PRECIO_BASE = {
@@ -14,6 +14,7 @@ const PRECIO_BASE = {
   Sundae: 15,
   "Helado con Queso": 22,
   "Tulipán con Queso": 24,
+  Flotante: 3,
 };
 
 const NOMBRES_CLIENTE = [
