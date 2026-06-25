@@ -1,7 +1,5 @@
 /* Fantasías Heladas CRM — vista Seguimientos */
 
-inicializarDatos();
-
 const fmtUsd = (n) => "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
 const CLASE_ESTADO = {
@@ -48,4 +46,7 @@ function marcarContactado(id) {
   renderSeguimientos();
 }
 
-renderSeguimientos();
+(async function iniciar() {
+  await cargarDatosIniciales();
+  renderSeguimientos();
+})();

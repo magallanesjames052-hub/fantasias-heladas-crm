@@ -1,7 +1,5 @@
 /* Fantasías Heladas CRM — lógica del dashboard */
 
-inicializarDatos();
-
 const fmtUsd = (n) =>
   "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
@@ -118,8 +116,11 @@ function renderChartMeses() {
   });
 }
 
-renderKpis();
-renderChartEmbudo();
-renderChartFuente();
-renderChartProducto();
-renderChartMeses();
+(async function iniciar() {
+  await cargarDatosIniciales();
+  renderKpis();
+  renderChartEmbudo();
+  renderChartFuente();
+  renderChartProducto();
+  renderChartMeses();
+})();

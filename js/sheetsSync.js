@@ -1,10 +1,17 @@
-/* Fantasías Heladas CRM — sincronización manual con Google Sheets (Apps Script) */
+/* Fantasías Heladas CRM — sincronización con Google Sheets (Apps Script)
 
+   AVISO: DEFAULT_SHEETS_URL queda escrita en el código público de este repositorio.
+   Cualquiera que vea el código fuente puede leer y SOBREESCRIBIR la hoja de Google
+   Sheets de destino (vía "Subir a Sheets" o llamando la URL directamente). Se deja
+   así a propósito para que el link público siempre cargue los datos reales sin que
+   cada visitante tenga que pegar la URL a mano -- decisión informada y aceptada. */
+
+const DEFAULT_SHEETS_URL = "https://script.google.com/macros/s/AKfycbyqT82Ft2Fa6NjtdhAiE0mmhf2iIG_ejZC-ydLKdDw3SfyuueIayran7pUAMXaqC-JLqg/exec";
 const SHEETS_URL_KEY = "fh_crm_sheets_url";
 const SHEETS_LAST_SYNC_KEY = "fh_crm_last_sync";
 
 function getSheetsUrl() {
-  return localStorage.getItem(SHEETS_URL_KEY) || "";
+  return localStorage.getItem(SHEETS_URL_KEY) || DEFAULT_SHEETS_URL;
 }
 
 function setSheetsUrl(url) {
@@ -13,6 +20,41 @@ function setSheetsUrl(url) {
 
 function marcarUltimaSync() {
   localStorage.setItem(SHEETS_LAST_SYNC_KEY, new Date().toLocaleString("es-EC"));
+}
+
+function mapearLeadsDesdeSheets(datos) {
+  const soloFecha = (v) => (v ? String(v).slice(0, 10) : "");
+  return datos.map((l) => ({
+    id: Number(l.id),
+    fecha: soloFecha(l.fecha),
+    cliente: l.cliente || "",
+    telefono: l.telefono ? String(l.telefono) : "",
+    producto: l.producto || "",
+    valorUsd: Number(l.valorUsd) || 0,
+    estado: l.estado || "Nuevo Lead",
+    fuente: l.fuente || "",
+    prioridad: l.prioridad || "Media",
+    notas: l.notas || "",
+    fechaSeguimiento: soloFecha(l.fechaSeguimiento),
+  }));
+}
+
+async function cargarDatosIniciales() {
+  const url = getSheetsUrl();
+  if (url) {
+    try {
+      const resp = await fetch(url, { method: "GET" });
+      if (resp.ok) {
+        const datos = await resp.json();
+        Store.saveAll(mapearLeadsDesdeSheets(datos));
+        marcarUltimaSync();
+        return;
+      }
+    } catch (err) {
+      console.warn("No se pudo cargar desde Google Sheets, usando datos locales:", err);
+    }
+  }
+  inicializarDatos();
 }
 
 function abrirModalSync() {
@@ -49,20 +91,7 @@ async function traerDeSheets() {
     const resp = await fetch(url, { method: "GET" });
     if (!resp.ok) throw new Error("HTTP " + resp.status);
     const datos = await resp.json();
-    const soloFecha = (v) => (v ? String(v).slice(0, 10) : "");
-    const leads = datos.map((l) => ({
-      id: Number(l.id),
-      fecha: soloFecha(l.fecha),
-      cliente: l.cliente || "",
-      telefono: l.telefono ? String(l.telefono) : "",
-      producto: l.producto || "",
-      valorUsd: Number(l.valorUsd) || 0,
-      estado: l.estado || "Nuevo Lead",
-      fuente: l.fuente || "",
-      prioridad: l.prioridad || "Media",
-      notas: l.notas || "",
-      fechaSeguimiento: soloFecha(l.fechaSeguimiento),
-    }));
+    const leads = mapearLeadsDesdeSheets(datos);
     Store.saveAll(leads);
     marcarUltimaSync();
     estado.textContent = `Listo: se trajeron ${leads.length} clientes potenciales. Recargando...`;

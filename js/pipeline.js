@@ -1,7 +1,5 @@
 /* Fantasías Heladas CRM — vista Pipeline (kanban por estado) */
 
-inicializarDatos();
-
 const fmtUsd = (n) => "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
 const COLORES_ESTADO = {
@@ -41,4 +39,7 @@ function renderKanban() {
     .join("");
 }
 
-renderKanban();
+(async function iniciar() {
+  await cargarDatosIniciales();
+  renderKanban();
+})();

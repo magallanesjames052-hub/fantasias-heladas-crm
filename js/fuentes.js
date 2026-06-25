@@ -1,7 +1,5 @@
 /* Fantasías Heladas CRM — vista Fuentes (desempeño por canal) */
 
-inicializarDatos();
-
 const fmtUsd = (n) => "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
 function renderFuentes() {
@@ -42,4 +40,7 @@ function renderFuentes() {
   });
 }
 
-renderFuentes();
+(async function iniciar() {
+  await cargarDatosIniciales();
+  renderFuentes();
+})();

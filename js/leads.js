@@ -1,7 +1,5 @@
 /* Fantasías Heladas CRM — gestión de clientes potenciales (tabla + CRUD) */
 
-inicializarDatos();
-
 const fmtUsd = (n) => "$" + Number(n).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
 const POR_PAGINA = 12;
@@ -180,5 +178,8 @@ document.getElementById("filtroPrioridad").addEventListener("change", () => {
   renderTabla();
 });
 
-poblarSelects();
-renderTabla();
+(async function iniciar() {
+  await cargarDatosIniciales();
+  poblarSelects();
+  renderTabla();
+})();
