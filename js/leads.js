@@ -179,7 +179,9 @@ document.getElementById("filtroPrioridad").addEventListener("change", () => {
 });
 
 (async function iniciar() {
+  mostrarCargando();
   await cargarDatosIniciales();
   poblarSelects();
   renderTabla();
+  ocultarCargando();
 })();

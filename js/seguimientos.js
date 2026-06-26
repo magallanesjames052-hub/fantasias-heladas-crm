@@ -47,6 +47,8 @@ function marcarContactado(id) {
 }
 
 (async function iniciar() {
+  mostrarCargando();
   await cargarDatosIniciales();
   renderSeguimientos();
+  ocultarCargando();
 })();

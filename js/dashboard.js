@@ -117,10 +117,12 @@ function renderChartMeses() {
 }
 
 (async function iniciar() {
+  mostrarCargando();
   await cargarDatosIniciales();
   renderKpis();
   renderChartEmbudo();
   renderChartFuente();
   renderChartProducto();
   renderChartMeses();
+  ocultarCargando();
 })();

@@ -40,6 +40,8 @@ function renderKanban() {
 }
 
 (async function iniciar() {
+  mostrarCargando();
   await cargarDatosIniciales();
   renderKanban();
+  ocultarCargando();
 })();

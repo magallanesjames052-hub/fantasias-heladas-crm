@@ -41,6 +41,8 @@ function renderFuentes() {
 }
 
 (async function iniciar() {
+  mostrarCargando();
   await cargarDatosIniciales();
   renderFuentes();
+  ocultarCargando();
 })();

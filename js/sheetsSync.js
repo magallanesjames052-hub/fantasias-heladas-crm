@@ -43,7 +43,10 @@ async function cargarDatosIniciales() {
   const url = getSheetsUrl();
   if (url) {
     try {
-      const resp = await fetch(url, { method: "GET" });
+      const controller = new AbortController();
+      const limiteEspera = setTimeout(() => controller.abort(), 8000);
+      const resp = await fetch(url, { method: "GET", signal: controller.signal });
+      clearTimeout(limiteEspera);
       if (resp.ok) {
         const datos = await resp.json();
         Store.saveAll(mapearLeadsDesdeSheets(datos));
